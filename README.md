@@ -111,22 +111,22 @@ npm run docker:run
 
 ```
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── api/temperature/    # API endpoints
-│   │   ├── temperature/        # Dashboard page
-│   │   ├── layout.tsx          # Root layout
-│   │   └── page.tsx           # Home page
-│   ├── lib/                   # Core libraries
-│   │   ├── config.ts          # Configuration management
-│   │   ├── sensor.ts          # Sensor simulation
-│   │   └── etl.ts            # ETL pipeline logic
-│   └── components/ui/         # Reusable UI components
-├── public/                    # Static assets
-├── docker-compose.yml         # Multi-service setup
-├── Dockerfile                # Container configuration
-├── init-db.sql              # Database initialization
-├── mosquitto.conf           # MQTT broker config
-└── README.md               # This file
+│   ├── app/                    
+│   │   ├── api/temperature/    
+│   │   ├── temperature/        
+│   │   ├── layout.tsx          
+│   │   └── page.tsx           
+│   ├── lib/                   
+│   │   ├── config.ts          
+│   │   ├── sensor.ts          
+│   │   └── etl.ts            
+│   └── components/ui/         
+├── public/                    
+├── docker-compose.yml         
+├── Dockerfile                
+├── init-db.sql              
+├── mosquitto.conf           
+└── README.md               
 ```
 
 ## 🔧 Configuration
@@ -332,33 +332,6 @@ Enable detailed logging:
 export LOG_LEVEL=debug
 npm run dev
 ```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow TypeScript best practices
-- Add proper error handling
-- Include JSDoc comments for functions
-- Test both simulation and integration scenarios
-- Update documentation for new features
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Next.js Team** - For the excellent React framework
-- **Google Cloud** - For comprehensive IoT and data services
-- **Docker** - For containerization technology
-- **Eclipse Mosquitto** - For MQTT broker implementation
 
 ## 📞 Support
 
