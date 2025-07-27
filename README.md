@@ -324,21 +324,7 @@ curl -X GET http://localhost:8000/api/temperature?stats=true
    - Check `/api/temperature` endpoint directly
    - Verify ETL statistics at `/api/temperature?stats=true`
 
-### Debug Mode
 
-Enable detailed logging:
-```bash
-# Set environment variable
-export LOG_LEVEL=debug
-npm run dev
-```
-
-## 📞 Support
-
-For questions and support:
-- Create an issue in the repository
-- Check the troubleshooting section
-- Review GCP integration documentation
 
 ---
 
