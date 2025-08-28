@@ -1,10 +1,8 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  // Enable standalone output for Docker deployment
   output: 'standalone',
   
-  // Image optimization
   images: {
     remotePatterns: [
       {
@@ -13,13 +11,11 @@ const nextConfig: NextConfig = {
         pathname: '/photos/**',
       },
     ],
-    unoptimized: true, // For Docker deployment
+    unoptimized: true,
   },
   
-  // Server external packages
   serverExternalPackages: [],
-  
-  // Headers for security and CORS
+
   async headers() {
     return [
       {
@@ -42,7 +38,6 @@ const nextConfig: NextConfig = {
     ];
   },
   
-  // Redirects for convenience
   async redirects() {
     return [
       {
