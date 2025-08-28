@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # Main IoT Temperature App
   iot-app:
     build: .
     ports:
@@ -19,7 +18,6 @@ services:
       retries: 3
       start_period: 40s
 
-  # PostgreSQL Database (for future GCP BigQuery replacement)
   postgres:
     image: postgres:15-alpine
     environment:
@@ -33,7 +31,7 @@ services:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     restart: unless-stopped
 
-  # Redis for caching (optional)
+
   redis:
     image: redis:7-alpine
     ports:
@@ -43,7 +41,6 @@ services:
     restart: unless-stopped
     command: redis-server --appendonly yes
 
-  # MQTT Broker (for future IoT device simulation)
   mosquitto:
     image: eclipse-mosquitto:2
     ports:
