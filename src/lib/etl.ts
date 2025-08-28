@@ -1,4 +1,3 @@
-// src/lib/etl.ts
 import { getSensorData, getEnhancedSensorData, SensorReading } from './sensor';
 import { config } from './config';
 
@@ -17,7 +16,6 @@ export interface ETLStats {
   lastProcessed: number;
 }
 
-// In-memory data store (replace with BigQuery in GCP integration)
 let temperatureData: TemperatureRecord[] = [];
 let etlStats: ETLStats = {
   totalRecords: 0,
@@ -26,21 +24,13 @@ let etlStats: ETLStats = {
   lastProcessed: 0,
 };
 
-// Flag to ensure the ETL pipeline starts only once
 let etlStarted = false;
 
-/**
- * Extract: Get data from sensor
- * GCP Integration Point: Replace with Pub/Sub message processing
- */
+
 function extractData(): SensorReading {
   return getEnhancedSensorData();
 }
 
-/**
- * Transform: Validate and clean the data
- * Apply business rules and data quality checks
- */
 function transformData(sensorReading: SensorReading): TemperatureRecord | null {
   try {
     const { temperature, sensorId, location } = sensorReading;
@@ -52,9 +42,8 @@ function transformData(sensorReading: SensorReading): TemperatureRecord | null {
       return null;
     }
     
-    // Data transformation
     const record: TemperatureRecord = {
-      temperature: Math.round(temperature * 100) / 100, // Round to 2 decimal places
+      temperature: Math.round(temperature * 100) / 100, 
       timestamp: Date.now(),
       sensorId,
       location,
@@ -70,15 +59,10 @@ function transformData(sensorReading: SensorReading): TemperatureRecord | null {
   }
 }
 
-/**
- * Load: Store the processed data
- * GCP Integration Point: Replace with BigQuery insert
- */
 function loadData(record: TemperatureRecord): void {
   try {
     temperatureData.push(record);
-    
-    // Keep the history limited to prevent memory issues
+  
     if (temperatureData.length > config.MAX_RECORDS) {
       temperatureData.shift();
     }
@@ -92,18 +76,12 @@ function loadData(record: TemperatureRecord): void {
   }
 }
 
-/**
- * Main ETL process
- */
 function runETLCycle(): void {
   try {
-    // Extract
     const sensorReading = extractData();
-    
-    // Transform
+  
     const transformedRecord = transformData(sensorReading);
-    
-    // Load
+
     if (transformedRecord) {
       loadData(transformedRecord);
     }
@@ -112,9 +90,6 @@ function runETLCycle(): void {
   }
 }
 
-/**
- * Start the ETL pipeline
- */
 export function startETL(pollingInterval = config.ETL_POLLING_INTERVAL): void {
   if (etlStarted) {
     console.log("ETL pipeline already running");
@@ -123,49 +98,32 @@ export function startETL(pollingInterval = config.ETL_POLLING_INTERVAL): void {
   
   etlStarted = true;
   console.log(`Starting ETL pipeline with ${pollingInterval}ms interval`);
-  
-  // Run initial cycle
+
   runETLCycle();
   
-  // Schedule recurring cycles
   setInterval(() => {
     runETLCycle();
   }, pollingInterval);
 }
 
-/**
- * Get processed temperature data
- */
 export function getTemperatureData(): TemperatureRecord[] {
-  return [...temperatureData]; // Return a copy to prevent external mutations
+  return [...temperatureData];
 }
 
-/**
- * Get ETL statistics
- */
 export function getETLStats(): ETLStats {
   return { ...etlStats };
 }
 
-/**
- * Get latest temperature reading
- */
 export function getLatestTemperature(): TemperatureRecord | null {
   return temperatureData.length > 0 ? temperatureData[temperatureData.length - 1] : null;
 }
 
-/**
- * Get temperature data within a time range
- */
 export function getTemperatureDataByTimeRange(startTime: number, endTime: number): TemperatureRecord[] {
   return temperatureData.filter(record => 
     record.timestamp >= startTime && record.timestamp <= endTime
   );
 }
 
-/**
- * Reset ETL pipeline (useful for testing)
- */
 export function resetETL(): void {
   temperatureData = [];
   etlStats = {
@@ -178,25 +136,7 @@ export function resetETL(): void {
 }
 
 /*
-GCP Integration Points:
-
-1. Replace extractData() with Pub/Sub message handler:
-   - Subscribe to IoT topic
-   - Process incoming messages
-   - Handle message acknowledgment
-
-2. Replace loadData() with BigQuery operations:
-   - Insert records into BigQuery table
-   - Handle batch inserts for efficiency
-   - Implement error handling and retries
-
-3. Add Cloud Functions integration:
-   - Trigger additional processing
-   - Send alerts for anomalies
-   - Update dashboards
-
-Example BigQuery integration:
-```typescript
+GCP code
 import { BigQuery } from '@google-cloud/bigquery';
 
 async function loadToBigQuery(record: TemperatureRecord) {
@@ -210,5 +150,4 @@ async function loadToBigQuery(record: TemperatureRecord) {
   
   await table.insert([record]);
 }
-```
 */
